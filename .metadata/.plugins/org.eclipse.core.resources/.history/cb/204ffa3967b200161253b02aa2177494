@@ -1,0 +1,15 @@
+package nameservice;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+
+public class NameServiceThread extends Thread{
+    public void run() {
+    	try {
+			ServerSocket serSock = new ServerSocket(8889);
+		} catch (IOException e) {
+			System.out.println("Could not create server socket!");
+			e.printStackTrace();
+		}
+    }
+}

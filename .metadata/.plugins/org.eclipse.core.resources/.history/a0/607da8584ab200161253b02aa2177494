@@ -1,0 +1,14 @@
+package aufgabe3;
+
+public class Client {
+
+	public static void main(String[] args) {
+/*		ObjectBroker objBroker = ObjectBroker.init(host, port, false);
+		NameService nameSvc = objBroker.getNameService();
+		nameSvc.rebind((Object) myObject, “zumsel“);
+		objBroker.shutDown();
+*/
+		System.out.println("Hallo Welt");
+	}
+
+}

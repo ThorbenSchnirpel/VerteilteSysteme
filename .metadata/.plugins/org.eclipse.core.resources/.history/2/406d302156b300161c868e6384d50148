@@ -1,0 +1,39 @@
+package tcp_basics;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+/**
+ * Refresher zur TCP-Programmierung (Serverseite)
+ *
+ */
+public class Server {
+
+	public static void main(String[] args) throws IOException {
+		ServerSocket mySvrSocket;
+		BufferedReader in;
+		OutputStream out;		
+		
+		mySvrSocket = new ServerSocket(14001);		
+		
+		while(true){
+		// Auf Verbindungsanfrage warten.
+		Socket mySock = mySvrSocket.accept(); // -> Socket fuer die eigentliche Verbindung
+		
+
+			
+		}
+		
+		// Verbindung schliessen
+		in.close();
+		out.close();
+		mySock.close();
+		
+		// Server runterfahren
+		mySvrSocket.close();
+	}
+}

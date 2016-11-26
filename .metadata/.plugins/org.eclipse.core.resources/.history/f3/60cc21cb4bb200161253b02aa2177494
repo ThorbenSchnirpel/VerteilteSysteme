@@ -1,0 +1,41 @@
+package aufgabe3;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server {
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		ServerSocket mySvrSocket;
+		BufferedReader in;
+		OutputStream out;		
+		
+		mySvrSocket = new ServerSocket(14001);		
+		
+		// Auf Verbindungsanfrage warten.
+		Socket mySock = mySvrSocket.accept(); // -> Socket fuer die eigentliche Verbindung
+		
+		// I/O-Kanäle der Socket
+		in = new BufferedReader(new InputStreamReader(mySock.getInputStream()));
+		out = mySock.getOutputStream();
+		
+		// Kommunikation
+		while(1){
+		System.out.println(in.readLine());
+		out.write(("Who's there?\n").getBytes());
+		
+		// Verbindung schliessen
+		in.close();
+		out.close();
+		mySock.close();
+		
+		// Server runterfahren
+		mySvrSocket.close();
+	}
+
+}

@@ -1,0 +1,15 @@
+package aufgabe3;
+
+import mware_lib.*;
+
+public class Client {
+	
+	public static void main(String[] args) throws UnknownHostException, IOException {
+		ObjectBroker objBroker = ObjectBroker.init("localhost", 8888, false);
+		NameService nameSrvc = objBroker.getNameService();
+		nameSrvc.rebind(null, "A");
+		NameService nameSvc = objBroker.getNameService();
+		nameSvc.rebind((Object) myObject, “zumsel“)
+	}
+
+}

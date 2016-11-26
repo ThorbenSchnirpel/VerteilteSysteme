@@ -1,20 +1,22 @@
 package mware_lib;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class ObjectBroker {
-	public static ObjectBroker init(String serviceHost, int listenPort, boolean debug) {
-		return null;
+	public static NameService nameServ;
+	
+	public ObjectBroker(NameService nameServ){
+		this.nameServ = nameServ;
 	}
-	// ­ Front­End der Middleware public static ObjectBroker init(String serviceHost, 
-	// int listenPort, boolean debug) { ... }    
-	//  Das hier zurückgelieferte Objekt soll der zentrale Einstiegspunkt     
-	//  der Middleware aus Applikationssicht sein.    
-	//  Parameter: Host und Port, bei dem die Dienste (hier: Namensdienst)    
-	//             kontaktiert werden sollen. Mit debug sollen Test   
-	//             ausgaben der Middleware ein­ oder ausgeschaltet werden    
-	//             können. 
+	public static ObjectBroker init(String serviceHost, int listenPort, boolean debug) throws UnknownHostException, IOException {
+		nameServ = new NameServiceStub(serviceHost,listenPort);	
+		return new ObjectBroker(nameServ);
+	}
+
 
 	public NameService getNameService() {
-		return null;
+		return nameServ;
 		//  Liefert den Namensdienst (Stellvetreterobjekt).
 	}
 

@@ -1,0 +1,13 @@
+package aufgabe3;
+
+import mware_lib.*;
+
+public class Client {
+	
+	public static void main(String[] args){
+		ObjectBroker objBroker = ObjectBroker.init("localhost", 8888, false);
+		NameService nameSrvc = objBroker.getNameService();
+		nameSrvc.resolve("A");
+	}
+
+}
