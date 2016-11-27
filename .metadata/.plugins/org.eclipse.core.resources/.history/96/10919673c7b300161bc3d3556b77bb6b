@@ -1,0 +1,19 @@
+package mware_lib;
+
+import java.io.Serializable;
+
+public class RawObject implements Serializable{
+	String value;
+	public RawObject(){
+		value = "Hallo ich bin das Objekt";
+	}
+	
+	public RawObject(){
+		value = "Hallo ich bin ein anderes Object";
+	}
+	
+	public String toString(){
+		return value;
+	}
+	
+}

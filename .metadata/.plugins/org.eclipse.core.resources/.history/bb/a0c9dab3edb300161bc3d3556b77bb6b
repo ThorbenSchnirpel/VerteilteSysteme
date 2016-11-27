@@ -1,0 +1,77 @@
+package nameservice;
+
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.HashMap;
+
+import aufgabe3.Client;
+import mware_lib.NameService;
+import mware_lib.RawObject;
+
+public class NameServiceImpl{
+
+	private static HashMap<String, RawObject> nameMap = new HashMap<String,RawObject>();
+
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
+		ServerSocket mySvrSocket;
+		ObjectOutputStream objOut; // rebind
+		ObjectInputStream objIn; // resolve
+
+		mySvrSocket = new ServerSocket(8811);
+
+		while (true) {
+			Socket mySock = mySvrSocket.accept();
+
+			objIn = new ObjectInputStream(mySock.getInputStream());
+			objOut = new ObjectOutputStream(mySock.getOutputStream());
+			
+			String req = (String) objIn.readObject();
+			System.out.println(req);
+
+			if (req.equals("resolve")) {
+				System.out.println("Got resolve request");
+
+				String name = (String) objIn.readObject();
+				
+				System.out.println("Got resolve-Request for : " + name );
+				
+				Object obj = nameMap.get(name);
+				System.out.println(obj.toString());
+				
+				objOut.writeObject(obj);
+				objOut.flush();
+
+				System.out.println("Finished resolve request");
+				
+			} else if (req.equals("rebind")) {
+				System.out.println("Got rebind request");
+				
+				Object servant = (Object) objIn.readObject();
+				String name = (String) objIn.readObject();
+
+				System.out.println("Add Object: " + servant.toString() + " with name : " + name + " to nameMap!");
+				
+				System.out.println("Connected to host : " + mySock.getInetAddress().getHostAddress() );
+				System.out.println("and port: " + mySock.getPort());
+
+				RawObject rawObj = new RawObject(mySock.getInetAddress().getHostAddress(),mySock.getPort(),servant);
+				
+				nameMap.put(name, rawObj);
+
+				System.out.println("Finished rebind request");
+			} else {
+				System.out.println(req);
+			}
+
+			objIn.close();
+			objOut.close();
+			mySock.close();
+		}
+	}
+}

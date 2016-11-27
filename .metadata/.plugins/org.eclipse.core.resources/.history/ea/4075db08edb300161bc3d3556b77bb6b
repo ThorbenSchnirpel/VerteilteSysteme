@@ -1,0 +1,22 @@
+package mware_lib;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+
+public class ServerSkeletonThread extends Thread{
+    ServerSocket svrSocket;
+    
+    ServerSkeletonThread(int port) {
+        try {
+			svrSocket = new ServerSocket(port);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+
+    public void run() {
+        // compute primes larger than minPrime
+         . . .
+    }
+}

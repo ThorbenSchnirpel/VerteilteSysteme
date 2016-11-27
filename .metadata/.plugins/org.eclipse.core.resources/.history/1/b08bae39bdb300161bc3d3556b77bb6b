@@ -1,0 +1,8 @@
+package mware_lib;
+
+public class RawObject {
+	String value;
+	public RawObject(){
+		value = "Hallo ich bin das Objekt";
+	}
+}

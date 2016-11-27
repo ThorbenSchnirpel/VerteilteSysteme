@@ -1,0 +1,16 @@
+package mware_lib;
+
+import java.net.ServerSocket;
+
+public class ServerSkeletonThread extends Thread{
+    ServerSocket svrSocket;
+    
+    ServerSkeletonThread(int port) {
+        svrSocket = new ServerSocket(port);
+    }
+
+    public void run() {
+        // compute primes larger than minPrime
+         . . .
+    }
+}

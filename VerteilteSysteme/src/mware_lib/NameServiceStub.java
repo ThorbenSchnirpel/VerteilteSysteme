@@ -12,27 +12,36 @@ import java.net.UnknownHostException;
 public class NameServiceStub extends NameService {
 
 	Socket stubSocket;
-	private OutputStream Out;
+	private String host;
+	private int port;
 	private ObjectOutputStream objOut; // rebind
 	private ObjectInputStream objIn; // resolve
 
 	public NameServiceStub(String host, int port) throws UnknownHostException, IOException {
-		stubSocket = new Socket(host, port);
-
-		Out = stubSocket.getOutputStream();
-		objOut = new ObjectOutputStream(stubSocket.getOutputStream());
+		this.host=host;
+		this.port=port;
 	}
 
 	@Override
 	public void rebind(Object servant, String name) {
 		// Kommunikation
 		try {
-			System.out.println("Called rebind in NameServiceStub");
-			String rebind = "rebind\n";
-			Out.write(("\n").getBytes());
-			Out.write(rebind.getBytes());
-			Out.write((name+"\n").getBytes());
-			//objOut.writeObject(servant);
+			stubSocket = new Socket(host, port);
+			objOut = new ObjectOutputStream(stubSocket.getOutputStream());
+
+			//Send rebind-Request
+			objOut.writeObject("rebind");
+			objOut.writeObject(servant);
+			objOut.writeObject(name);
+			objOut.flush();
+
+			int port_skel =stubSocket.getLocalPort();
+			
+			//stubSocket.close();
+
+			//ServerSkeletonThread servSkel = new ServerSkeletonThread(port_skel);
+			//servSkel.start();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -40,16 +49,25 @@ public class NameServiceStub extends NameService {
 	}
 
 	@Override
-	public Object resolve(String name) {
+	public Object resolve(String name){
 		try {
-			System.out.println("Called resolve in NameServiceStub");
-			String reslv = "resolve\n";
-			Out.write(("\n").getBytes());
-			Out.write(reslv.getBytes());
-			Out.write((name+"\n").getBytes());
-			System.out.println("Finished resolve request");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
+			stubSocket = new Socket(host, port); //Get new tcp-connection
+			
+			objOut = new ObjectOutputStream(stubSocket.getOutputStream());
+			objIn = new ObjectInputStream(stubSocket.getInputStream());
+			
+			//Send resolve-request
+			objOut.writeObject("resolve");
+			objOut.writeObject(name);
+			objOut.flush();
+			
+			//Receive resolve-reply
+			Object res = (Object) objIn.readObject();
+			
+			return res;
+			
+		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		return null;
