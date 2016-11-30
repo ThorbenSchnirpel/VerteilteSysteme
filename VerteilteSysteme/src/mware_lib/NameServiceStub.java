@@ -1,19 +1,16 @@
 package mware_lib;
 
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class NameServiceStub extends NameService {
 
-	Socket stubSocket;
-	private String host;
-	private int port;
+	private String host; //NameService
+	private int port; //NameService
 	private ObjectOutputStream objOut; // rebind
 	private ObjectInputStream objIn; // resolve
 
@@ -26,7 +23,7 @@ public class NameServiceStub extends NameService {
 	public void rebind(Object servant, String name) {
 		// Kommunikation
 		try {
-			stubSocket = new Socket(host, port);
+			Socket stubSocket = new Socket(host, port);
 			objOut = new ObjectOutputStream(stubSocket.getOutputStream());
 
 			//Send rebind-Request
@@ -34,13 +31,11 @@ public class NameServiceStub extends NameService {
 			objOut.writeObject(servant);
 			objOut.writeObject(name);
 			objOut.flush();
-
-			int port_skel =stubSocket.getLocalPort();
+				
+			ObjectBroker.setObj(name, servant);
 			
+			//objOut.close();
 			//stubSocket.close();
-
-			//ServerSkeletonThread servSkel = new ServerSkeletonThread(port_skel);
-			//servSkel.start();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -52,6 +47,7 @@ public class NameServiceStub extends NameService {
 	public Object resolve(String name){
 		try {
 			
+			Socket 
 			stubSocket = new Socket(host, port); //Get new tcp-connection
 			
 			objOut = new ObjectOutputStream(stubSocket.getOutputStream());
@@ -64,6 +60,10 @@ public class NameServiceStub extends NameService {
 			
 			//Receive resolve-reply
 			Object res = (Object) objIn.readObject();
+
+			objOut.close();
+			objIn.close();
+			stubSocket.close();
 			
 			return res;
 			

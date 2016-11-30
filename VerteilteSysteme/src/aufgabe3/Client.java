@@ -1,7 +1,6 @@
 package aufgabe3;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.net.UnknownHostException;
 
 import accessor_one.ClassOneImplBase;
@@ -15,11 +14,13 @@ public class Client {
 		NameService nameSrvc = objBroker.getNameService();
 		
 		Object rawObjRef =nameSrvc.resolve("A"); // gets RawObject (host,port,Object) from NS
-		ClassOneImplBase remoteObj = ClassOneImplBase.narrowCast(rawObjRef); //Gets a ClassOneImplStub 
+		System.out.println("Client: resolved A to : " + ((RawObject)rawObjRef).getObj());
+		
+		ClassOneImplBase remoteObj = ClassOneImplBase.narrowCast(rawObjRef); //Gets a ClassOneImplStub
+
 		String s = remoteObj.methodOne(556,"Hi there");
 		System.out.println(s);
-		System.out.println("Client: resolved A to : " + rawObjRef.toString());
-		
+
 		objBroker.shutDown();
 	}
 

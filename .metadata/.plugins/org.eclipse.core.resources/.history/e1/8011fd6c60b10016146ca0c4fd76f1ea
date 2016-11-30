@@ -1,7 +1,0 @@
-package accessor_two;
-
-public class SomeException604 extends Exception {
-	public SomeException(String message){
-		super(message);
-	}
-}

@@ -1,9 +1,0 @@
-package nameservice;
-
-import java.net.ServerSocket;
-
-public class NameServiceThread extends Thread{
-    public void run() {
-    	ServerSocket serSock = new ServerSocket(8889);
-    }
-}

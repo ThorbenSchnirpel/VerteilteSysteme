@@ -18,7 +18,7 @@ public class NameServiceImpl{
 		ServerSocket mySvrSocket;
 		ObjectOutputStream objOut; // rebind
 		ObjectInputStream objIn; // resolve
-
+		//TODO: Port muss zur Laufzeit einstellbar sein
 		mySvrSocket = new ServerSocket(8811);
 
 		while (true) {
@@ -48,10 +48,11 @@ public class NameServiceImpl{
 				Object servant = (Object) objIn.readObject();
 				String name = (String) objIn.readObject();
 
-				RawObject rawObj = new RawObject(mySock.getInetAddress().getHostAddress(),mySock.getPort(),servant);
+				RawObject rawObj = new RawObject(mySock.getInetAddress().getHostAddress(),9999,servant); // ServerSkeletonThread always receives on port 9999
 				
 				nameMap.put(name, rawObj);
-				System.out.println("Added Object: " + servant.toString() + " with name : " + name + " to nameMap!");
+				System.out.println("Added Objectreference: " + servant + " with name : " + name + " to nameMap!");
+				
 			} else {
 				System.out.println(req);
 			}
